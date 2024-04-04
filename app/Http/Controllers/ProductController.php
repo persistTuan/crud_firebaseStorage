@@ -35,16 +35,16 @@ class ProductController extends Controller
                 'image' => $product['image'],
                 'categories' => $category['name'],
                 'category_id' => $category['id'],
+                'created_at' => $product['created_at'],
+                'updated_at' => $product['updated_at'],
             ]);
             return $result;
         });
-        $innerJoin = $innerJoin->toArray();
+        $innerJoin = $innerJoin->sortByDesc('created_at')->toArray();
         $products = $innerJoin;
-        // return view("products.index")->with("products", $products);
-        // print_r($products);
+       
         return view("products.index", compact('products', 'categories'));
-        // or
-        // return view("products.index", ['products' => $products, 'categories' => $categories]);
+       
     }
 
     public function edit(string $id){
@@ -55,15 +55,17 @@ class ProductController extends Controller
 
     public function update(Request $request, string $id){
         $product = $this->database->getReference("products/{$id}")->getValue();
-        if(isset($product['object'])){
-            $obj = $this->storage->getBucket()->object($this->folderImage . $product['object']);
-            $obj->delete();
-        }
+        
 
         $image = $request->file('image');  
         $myBucket = $this->storage->getBucket();
         if($image != null)
         {
+            if(isset($product['object']) ){
+                $obj = $this->storage->getBucket()->object($this->folderImage . $product['object']);
+                if($obj->exists())
+                $obj->delete();
+            }
             $hashName = $image->hashName();
             $obj = $myBucket->upload(
                 $image->get(),
@@ -79,11 +81,12 @@ class ProductController extends Controller
                 'status' => $request->status,
                 'object' => $hashName,
                 'image' => $obj->signedUrl(Carbon::now()->addYears(100)),
+                'updated_at' => date('Y-m-d H:i:s'),
             ];
         }
         else{
             // set trường hợp ảnh được thêm trực tiếp vào firebase bằng url nhưng chưa có trong storage
-            if (!isset($product['object']) || $myBucket->object($this->folderImage . $product['object'])->exists()) {
+            if (!isset($product['object']) && !$myBucket->object($this->folderImage . $product['object'])->exists()) {
                 $imageContent = file_get_contents($product['image']);
                 $imageName = basename($product['image']);
                 $obj = $myBucket->upload(
@@ -92,17 +95,28 @@ class ProductController extends Controller
                         'name' => $this->folderImage . $imageName,
                     ]
                 );
+                $data = [
+                    'name' => $request->name,
+                    'categories' => $request->categories,
+                    'price' => $request->price,
+                    'description' => $request->description,
+                    'status' => $request->status,
+                    'object' => $imageName,
+                    'image' => $obj->signedUrl(Carbon::now()->addYears(100)),
+                    'updated_at' => date('Y-m-d H:i:s')
+                ];
+            }
+            else {
+                $data = [
+                    'name' => $request->name,
+                    'categories' => $request->categories,
+                    'price' => $request->price,
+                    'description' => $request->description,
+                    'status' => $request->status,
+                    'updated_at' => date('Y-m-d H:i:s')
+                ];
             }
             
-            $data = [
-                'name' => $request->name,
-                'categories' => $request->categories,
-                'price' => $request->price,
-                'description' => $request->description,
-                'status' => $request->status,
-                'object' => $imageName,
-                'image' => $obj->signedUrl(Carbon::now()->addYears(100)),
-            ];
         }
           
         
@@ -114,12 +128,14 @@ class ProductController extends Controller
     public function store(Request $request){
         $request->validate([
             'name' => 'required',
+            'categories' => 'required',
             'price' => 'required',
             'description' => 'required',
             'status' => 'required',
             'image' => 'required',
         ]);
         $name = $request->name;
+        $categories = $request->categories;
         $price = $request->price;
         $description = $request->description;
         $status = $request->status;
@@ -136,11 +152,14 @@ class ProductController extends Controller
         $url = $object->signedUrl(Carbon::now()->addYears(100));
         $data = [
             'name' => $name,
+            'categories' => $categories,
             'price' => $price,
             'description' => $description,
             'status' => $status,
             'image' => $url,
             'object'=> $hashName,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
         ];
 
 
@@ -152,11 +171,12 @@ class ProductController extends Controller
     public function delete(string $id){
         $product = $this->database->getReference("products/{$id}");
         $folderImage = $this->folderImage;
-        // $this->storage->getBucket()->object($this->folderImage . $product->getValue()['object'])->delete();
-        $obj = $this->storage->getBucket()->object($this->folderImage . $product->getValue()['object']);
-        if($obj->exists())
-        {
-            $obj->delete();
+        if(isset($product->getValue()['object'])){
+            $obj = $this->storage->getBucket()->object($this->folderImage . $product->getValue()['object']);
+            if($obj->exists())
+            {
+                $obj->delete();
+            }
         }
         $product->remove();
         return redirect()->back();

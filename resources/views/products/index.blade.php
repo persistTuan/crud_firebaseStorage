@@ -11,36 +11,36 @@
         <div class="card-body">
             <form id="addFood" class="form" method="POST" action="{{route('store')}}" enctype="multipart/form-data">
                 @csrf
-                <div class="form-group">
-                    <label for="name">Name</label>
+                <div class="form-group d-flex justify-content-between mb-2 ">
+                    <label style="min-width: 100px;" for="name" >Name</label>
                     <input id="name" type="text" class="form-control" name="name" placeholder="Name" autofocus>
                 </div>
-                <div class="form-group">
-                    <label for="catrgories">Thể Loại </label>
+                <div class="form-group d-flex justify-content-between mb-2">
+                    <label style="min-width: 100px;" for="catrgories">Thể Loại </label>
                     <select name="categories" class="form-control" id="">
                         @foreach($categories as $key => $category)
                         <option value="{{$category['id']}}">{{$category['name']}}</option>
                         @endforeach
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="price">Price</label>
+                <div class="form-group d-flex justify-content-between mb-2">
+                    <label style="min-width: 100px;" for="price">Price</label>
                     <input id="price" type="number" class="form-control" name="price" placeholder="Price">
                 </div>
-                <div class="form-group">
-                    <label for="description">Description</label>
+                <div class="form-group d-flex justify-content-between mb-2">
+                    <label style="min-width: 100px;" for="description">Description</label>
                     <textarea id="description" class="form-control" name="description"
                         placeholder="Description"></textarea>
                 </div>
-                <div class="form-group">
-                    <label for="status">Status</label>
+                <div class="form-group d-flex justify-content-between mb-2">
+                    <label style="min-width: 100px;" for="status">Status</label>
                     <select id="status" class="form-control" name="status">
                         <option value="available">Available</option>
                         <option value="unavailable">Unavailable</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="image">Image URL</label>
+                <div class="form-group d-flex  mb-2">
+                    <label style="min-width: 100px;" for="image">Image URL</label>
                     <input id="image" type="file" accept="image/png, image/jpeg, image/jpg" name="image">
                 </div>
                 <button id="submitFood" type="submit" class="btn btn-primary">Submit</button>
