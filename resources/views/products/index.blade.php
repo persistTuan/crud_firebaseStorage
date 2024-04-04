@@ -16,6 +16,14 @@
                     <input id="name" type="text" class="form-control" name="name" placeholder="Name" autofocus>
                 </div>
                 <div class="form-group">
+                    <label for="catrgories">Thể Loại </label>
+                    <select name="categories" class="form-control" id="">
+                        @foreach($categories as $key => $category)
+                        <option value="{{$category['id']}}">{{$category['name']}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="price">Price</label>
                     <input id="price" type="number" class="form-control" name="price" placeholder="Price">
                 </div>
@@ -45,6 +53,7 @@
     <table class="table table-bordered">
         <tr>
             <th>Name</th>
+            <th>Category</th>
             <th>Price</th>
             <th>Description</th>
             <th>Status</th>
@@ -56,6 +65,7 @@
             @foreach($products as $key => $product)
             <tr id="tr_{{$key}}">
                 <td id="name_{{$key}}">{{$product['name']}}</td>
+                <td id="name_{{$key}}">{{$product['categories']}}</td>
                 <td id="price_{{$key}}">{{$product['price']}}</td>
                 <td id="description_{{$key}}">{{$product['description']}}</td>
                 <td id="status_{{$key}}">{{$product['status']}}</td>
