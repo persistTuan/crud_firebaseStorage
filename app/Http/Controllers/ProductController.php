@@ -170,7 +170,6 @@ class ProductController extends Controller
 
     public function delete(string $id){
         $product = $this->database->getReference("products/{$id}");
-        $folderImage = $this->folderImage;
         if(isset($product->getValue()['object'])){
             $obj = $this->storage->getBucket()->object($this->folderImage . $product->getValue()['object']);
             if($obj->exists())
