@@ -18,7 +18,7 @@
 ```
 7. **Mở file .env và paste đoạn code này vào bất kì đâu**
 > FIREBASE_CREDENTIALS="foodapp-be64c-firebase-adminsdk-hmmb6-faaf4cfdfd.json"\
-> FIREBASE_DATABASE_URL= "https://foodapp-be64c-default-rtdb.firebaseio.com/"\
+> FIREBASE_DATABASE_URL= "https://foodapp-be64c-default-rtdb.firebaseio.com/" \
 > FIREBASE_STORAGE_DEFAULT_BUCKET= "foodapp-be64c.appspot.com"
 
 8. **Chạy project bằng lệnh**
