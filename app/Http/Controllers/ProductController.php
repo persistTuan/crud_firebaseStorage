@@ -86,7 +86,7 @@ class ProductController extends Controller
         }
         else{
             // set trường hợp ảnh được thêm trực tiếp vào firebase bằng url nhưng chưa có trong storage
-            if (!isset($product['object']) && !$myBucket->object($this->folderImage . $product['object'])->exists()) {
+            if (!isset($product['object']) || !$myBucket->object($this->folderImage . $product['object'])->exists()) {
                 $imageContent = file_get_contents($product['image']);
                 $imageName = basename($product['image']);
                 $obj = $myBucket->upload(
