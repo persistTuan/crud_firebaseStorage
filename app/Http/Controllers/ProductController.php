@@ -9,6 +9,7 @@ use Kreait\Firebase\Storage\Bucket;
 use Google\Cloud\Core\Timestamp;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+// use Carbon\Carbon;
 class ProductController extends Controller
 {
     //
@@ -37,6 +38,7 @@ class ProductController extends Controller
                 'category_id' => $category['id'],
                 'created_at' => $product['created_at'],
                 'updated_at' => $product['updated_at'],
+                'quantity' => $product['quantity'] ?? 0,
             ]);
             return $result;
         });
@@ -80,8 +82,8 @@ class ProductController extends Controller
                 'description' => $request->description,
                 'status' => $request->status,
                 'object' => $hashName,
-                'image' => $obj->signedUrl(Carbon::now()->addYears(100)),
-                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now('Asia/Ho_Chi_Minh'),
+                'quantity' => $request->quantity,
             ];
         }
         else{
@@ -103,7 +105,8 @@ class ProductController extends Controller
                     'status' => $request->status,
                     'object' => $imageName,
                     'image' => $obj->signedUrl(Carbon::now()->addYears(100)),
-                    'updated_at' => date('Y-m-d H:i:s')
+                    'updated_at' => Carbon::now('Asia/Ho_Chi_Minh'),
+                    'quantity' => $request->quantity,
                 ];
             }
             else {
@@ -113,7 +116,8 @@ class ProductController extends Controller
                     'price' => $request->price,
                     'description' => $request->description,
                     'status' => $request->status,
-                    'updated_at' => date('Y-m-d H:i:s')
+                    'updated_at' => Carbon::now('Asia/Ho_Chi_Minh'),
+                    'quantity' => $request->quantity,
                 ];
             }
             
@@ -133,12 +137,14 @@ class ProductController extends Controller
             'description' => 'required',
             'status' => 'required',
             'image' => 'required',
+            'quantity' => 'required',
         ]);
         $name = $request->name;
         $categories = $request->categories;
         $price = $request->price;
         $description = $request->description;
         $status = $request->status;
+        $quantity = $request->quantity;
         $image = $request->file('image');
 
         $myBucket = $this->storage->getBucket();
@@ -154,12 +160,13 @@ class ProductController extends Controller
             'name' => $name,
             'categories' => $categories,
             'price' => $price,
+            'quantity' => $quantity,
             'description' => $description,
             'status' => $status,
             'image' => $url,
             'object'=> $hashName,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
+            'created_at' => Carbon::now('Asia/Ho_Chi_Minh'),
+            'updated_at' => Carbon::now('Asia/Ho_Chi_Minh'),
         ];
 
 

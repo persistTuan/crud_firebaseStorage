@@ -25,11 +25,11 @@
             <label for="catrgories" style="min-width: 100px;">Thể Loại </label>
             <select name="categories" class="form-control w-100" id="">
                 @foreach($categories as $key => $category)
-                    @if($category['id'] == $product['categories'])
-                    <option selected value="{{$category['id']}}">{{$category['name']}}</option>
-                    @else
-                    <option value="{{$category['id']}}">{{$category['name']}}</option>
-                    @endif
+                @if($category['id'] == $product['categories'])
+                <option selected value="{{$category['id']}}">{{$category['name']}}</option>
+                @else
+                <option value="{{$category['id']}}">{{$category['name']}}</option>
+                @endif
                 @endforeach
             </select>
         </div>
@@ -37,6 +37,11 @@
             <label style="min-width: 100px;" for="price">Price</label>
             <input id="price" type="number" class="form-control" name="price" placeholder="Price"
                 value="{{$product['price']}}">
+        </div>
+        <div class="form-group d-flex justify-content-lg-around mb-2">
+            <label style="min-width: 100px;" for="price">Quantity</label>
+            <input id="quantity" type="number" class="form-control" name="quantity" placeholder="Quantity"
+                value="{{ $product['quantity'] ?? '' }}">
         </div>
         <div class="form-group d-flex justify-content-lg-around mb-2">
             <label style="min-width: 100px;" for="description">Description</label>
@@ -57,7 +62,8 @@
         </div>
         <div class=" d-flex mt-2 mb-2">
             <div style="min-width: 100px;">Image URL</div>
-            <input value="{{$product['image']}}" id="image" type="file" accept="image/png, image/jpeg, image/jpg" name="image">
+            <input value="{{$product['image']}}" id="image" type="file" accept="image/png, image/jpeg, image/jpg"
+                name="image">
         </div>
         <button id="submitFood" type="submit" class="btn btn-primary mb-2">Submit</button>
     </form>

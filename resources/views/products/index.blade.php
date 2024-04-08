@@ -28,6 +28,10 @@
                     <input id="price" type="number" class="form-control" name="price" placeholder="Price">
                 </div>
                 <div class="form-group d-flex justify-content-between mb-2">
+                    <label style="min-width: 100px;" for="price">Quantity</label>
+                    <input id="quantity" type="number" class="form-control" name="quantity" placeholder="Quantity">
+                </div>
+                <div class="form-group d-flex justify-content-between mb-2">
                     <label style="min-width: 100px;" for="description">Description</label>
                     <textarea id="description" class="form-control" name="description"
                         placeholder="Description"></textarea>
@@ -55,6 +59,7 @@
             <th>Name</th>
             <th>Category</th>
             <th>Price</th>
+            <th>Quantity</th>
             <th>Description</th>
             <th>Status</th>
             <th>Image</th>
@@ -67,6 +72,7 @@
                 <td id="name_{{$key}}">{{$product['name']}}</td>
                 <td id="name_{{$key}}">{{$product['categories']}}</td>
                 <td id="price_{{$key}}">{{$product['price']}}</td>
+                <td id="price_{{$key}}">{{$product['quantity']??0}}</td>
                 <td id="description_{{$key}}">{{$product['description']}}</td>
                 <td id="status_{{$key}}">{{$product['status']}}</td>
                 <td id="image_{{$key}}"><img alt="Ảnh đang bi lõi hoặc hết hạn truy cập" src="{{$product['image']}}"
